@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { route } from 'ziggy-js';
 
+// Define TypeScript interfaces for the product data and pagination links
 interface Product {
     id: number;
     image: string | null;
@@ -12,6 +13,7 @@ interface Product {
     updated_at: string;
 }
 
+// Define TypeScript interfaces for the product data and pagination links
 interface PaginationLink {
     url: string | null;
     label: string;
@@ -19,6 +21,7 @@ interface PaginationLink {
     active: boolean;
 }
 
+// Define TypeScript interfaces for the product data and pagination links
 interface Products {
     current_page: number;
     data: Product[];
@@ -35,11 +38,14 @@ interface Products {
     total: number;
 }
 
+// Define TypeScript interfaces for the product data and pagination links
 interface Props {
     products: Products;
 }
 
+// Define the ProductList component that takes in the products prop and renders the product list with pagination and search functionality
 function ProductList({ products }: Props) {
+    // Function to format the date in a more readable format
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -48,6 +54,7 @@ function ProductList({ products }: Props) {
         });
     };
 
+    // Render the product list with pagination and search functionality
     return (
         <div className="space-y-6 p-6">
             {/* Product Nav Header Starts */}
@@ -158,7 +165,7 @@ function ProductList({ products }: Props) {
 
                                     {/* Price */}
                                     <td className="px-6 py-4 font-medium">
-                                        $
+                                        $ &nbsp;
                                         {Number(product.price).toFixed(2)}
                                     </td>
 
