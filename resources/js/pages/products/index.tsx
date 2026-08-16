@@ -1,7 +1,7 @@
 import FlashMessage from '@/components/flash-message';
 import { Link, router } from '@inertiajs/react';
 import { Eye, Pencil, Plus, Search, Trash2, X } from 'lucide-react'; // https://lucide.dev/icons/
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { route } from 'ziggy-js';
 
 // Define TypeScript interfaces for the product data and pagination links
@@ -51,21 +51,31 @@ interface Props {
 // Define the ProductList component that takes in the products prop and renders the product list with pagination and search functionality
 function ProductList({ products, filters }: Props) {
     // Search state to manage the search input value, initialized with the search filter if available
-    const [search, setSearch] = useState(filters.search ?? '');
+    const [search, setSearch] = useState(filters?.search ?? '');
+    const isFirstRender = useRef(true);
 
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
         const timer = setTimeout(() => {
-            router.get(
-                '/products',
-                {
-                    search: search || undefined,
-                },
-                {
-                    preserveState: true,
-                    replace: true,
-                },
-            );
-        }, 400);
+        router.get(
+            '/products',
+            search
+                ? {
+                      search,
+                      page: 1,
+                  }
+                : {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            },
+        );
+    }, 400);
 
         return () => clearTimeout(timer);
     }, [search]);
