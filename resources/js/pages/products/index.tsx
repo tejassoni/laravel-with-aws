@@ -1,5 +1,6 @@
-import { Link } from '@inertiajs/react';
-import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import FlashMessage from '@/components/flash-message';
+import { Link, router } from '@inertiajs/react';
+import { Eye, Pencil, Plus, Search, Trash2 } from 'lucide-react'; // https://lucide.dev/icons/
 import { route } from 'ziggy-js';
 
 // Define TypeScript interfaces for the product data and pagination links
@@ -54,9 +55,27 @@ function ProductList({ products }: Props) {
         });
     };
 
+    // Delete product function that confirms the deletion and sends a delete request to the server
+    const deleteProduct = (productId: number) => {
+        if (!confirm('Are you sure you want to delete this product?')) {
+            return;
+        }
+
+        router.delete(
+            route('products.destroy', {
+                product: productId,
+            }),
+        );
+    };
+
     // Render the product list with pagination and search functionality
     return (
         <div className="space-y-6 p-6">
+
+           {/* Flash message starts */}
+            <FlashMessage />
+           {/* Flash message ends */}
+
             {/* Product Nav Header Starts */}
             <div className="flex items-center justify-between">
                 <div>
@@ -82,12 +101,12 @@ function ProductList({ products }: Props) {
             {/* Search Section Starts */}
             <div className="flex items-center justify-between">
                 <div className="relative w-full max-w-sm">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
                     <input
                         type="text"
                         placeholder="Search products..."
-                        className="w-full rounded-md border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full rounded-md border bg-background py-2 pr-3 pl-9 text-sm outline-none focus:ring-2 focus:ring-primary"
                     />
                 </div>
 
@@ -102,28 +121,27 @@ function ProductList({ products }: Props) {
                 <table className="w-full text-sm">
                     <thead className="border-b bg-muted/50">
                         <tr>
-
-                            <th className="px-6 py-3 text-left font-medium">
+                            <th className="px-6 py-3 text-center font-medium">
                                 Image
                             </th>
 
-                            <th className="px-6 py-3 text-left font-medium">
+                            <th className="px-6 py-3 text-center font-medium">
                                 Product
                             </th>
 
-                            <th className="px-6 py-3 text-left font-medium">
+                            <th className="px-6 py-3 text-center font-medium">
                                 Description
                             </th>
 
-                            <th className="px-6 py-3 text-left font-medium">
+                            <th className="px-6 py-3 text-center font-medium">
                                 Price
                             </th>
 
-                            <th className="px-6 py-3 text-left font-medium">
+                            <th className="px-6 py-3 text-center font-medium">
                                 Created
                             </th>
 
-                            <th className="px-6 py-3 text-right font-medium">
+                            <th className="px-6 py-3 text-center font-medium">
                                 Actions
                             </th>
                         </tr>
@@ -174,26 +192,48 @@ function ProductList({ products }: Props) {
                                         {formatDate(product.created_at)}
                                     </td>
 
-                                    {/* Actions */}
+                                    {/* Actions Starts */}
                                     <td className="px-6 py-4">
                                         <div className="flex justify-end gap-2">
+                                            {/* Show Starts */}
                                             <Link
-                                                href={route('products.edit', { id: product.id })}
+                                                href={route('products.show', {
+                                                    id: product.id,
+                                                })}
+                                                className="rounded-md p-2 hover:bg-muted"
+                                                title="Show"
+                                            >
+                                                <Eye className="h-4 w-4" />
+                                            </Link>
+                                            {/* Show Ends */}
+
+                                            {/* Edit Starts */}
+                                            <Link
+                                                href={route('products.edit', {
+                                                    id: product.id,
+                                                })}
                                                 className="rounded-md p-2 hover:bg-muted"
                                                 title="Edit"
                                             >
                                                 <Pencil className="h-4 w-4" />
                                             </Link>
+                                            {/* Edit Ends */}
 
+                                            {/* Delete Starts */}
                                             <button
                                                 type="button"
+                                                onClick={() =>
+                                                    deleteProduct(product.id)
+                                                }
                                                 className="rounded-md p-2 text-destructive hover:bg-muted"
                                                 title="Delete"
                                             >
                                                 <Trash2 className="h-4 w-4" />
                                             </button>
+                                            {/* Delete Ends */}
                                         </div>
                                     </td>
+                                    {/* Actions Ends */}
                                 </tr>
                             ))
                         ) : (
@@ -221,7 +261,9 @@ function ProductList({ products }: Props) {
                 <div className="flex gap-2">
                     {products.prev_page_url && (
                         <Link
-                            href={route('products.index', { page: products.current_page - 1 })}
+                            href={route('products.index', {
+                                page: products.current_page - 1,
+                            })}
                             className="rounded-md border px-3 py-2 text-sm hover:bg-muted"
                         >
                             Previous
@@ -230,7 +272,9 @@ function ProductList({ products }: Props) {
 
                     {products.next_page_url && (
                         <Link
-                            href={route('products.index', { page: products.current_page + 1 })}
+                            href={route('products.index', {
+                                page: products.current_page + 1,
+                            })}
                             className="rounded-md border px-3 py-2 text-sm hover:bg-muted"
                         >
                             Next
