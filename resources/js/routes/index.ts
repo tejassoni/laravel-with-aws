@@ -382,74 +382,74 @@ dashboard.form = dashboardForm
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/products'
+* @route '/categories'
 */
-export const products = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: products.url(options),
+export const categories = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: categories.url(options),
     method: 'get',
 })
 
-products.definition = {
+categories.definition = {
     methods: ["get","head"],
-    url: '/products',
+    url: '/categories',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/products'
+* @route '/categories'
 */
-products.url = (options?: RouteQueryOptions) => {
-    return products.definition.url + queryParams(options)
+categories.url = (options?: RouteQueryOptions) => {
+    return categories.definition.url + queryParams(options)
 }
 
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/products'
+* @route '/categories'
 */
-products.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: products.url(options),
+categories.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: categories.url(options),
     method: 'get',
 })
 
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/products'
+* @route '/categories'
 */
-products.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: products.url(options),
+categories.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: categories.url(options),
     method: 'head',
 })
 
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/products'
+* @route '/categories'
 */
-const productsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: products.url(options),
+const categoriesForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: categories.url(options),
     method: 'get',
 })
 
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/products'
+* @route '/categories'
 */
-productsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: products.url(options),
+categoriesForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: categories.url(options),
     method: 'get',
 })
 
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/products'
+* @route '/categories'
 */
-productsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: products.url({
+categoriesForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: categories.url({
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -458,4 +458,4 @@ productsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =>
     method: 'get',
 })
 
-products.form = productsForm
+categories.form = categoriesForm
