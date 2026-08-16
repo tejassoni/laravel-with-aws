@@ -1,11 +1,239 @@
+import { Link } from '@inertiajs/react';
+import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { route } from 'ziggy-js';
 
-function Product() {
-  return (
-    <div>
-      <h1>Product Page</h1>
-      {/* Add your form or content for viewing products here */}
-    </div>
-  );
+interface Product {
+    id: number;
+    image: string | null;
+    name: string;
+    description: string;
+    price: number;
+    created_at: string;
+    updated_at: string;
 }
 
-export default Product;
+interface PaginationLink {
+    url: string | null;
+    label: string;
+    page: number | null;
+    active: boolean;
+}
+
+interface Products {
+    current_page: number;
+    data: Product[];
+    first_page_url: string;
+    from: number | null;
+    last_page: number;
+    last_page_url: string;
+    links: PaginationLink[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number | null;
+    total: number;
+}
+
+interface Props {
+    products: Products;
+}
+
+function ProductList({ products }: Props) {
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
+    };
+
+    return (
+        <div className="space-y-6 p-6">
+            {/* Product Nav Header Starts */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-semibold tracking-tight">
+                        Products
+                    </h1>
+
+                    <p className="text-sm text-muted-foreground">
+                        Manage your products and inventory.
+                    </p>
+                </div>
+
+                <Link
+                    href={route('products.create')}
+                    className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90"
+                >
+                    <Plus className="h-4 w-4" />
+                    Add Product
+                </Link>
+            </div>
+            {/* Product Nav Header Ends */}
+
+            {/* Search Section Starts */}
+            <div className="flex items-center justify-between">
+                <div className="relative w-full max-w-sm">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        className="w-full rounded-md border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+                    />
+                </div>
+
+                <div className="text-sm text-muted-foreground">
+                    {products.total} products
+                </div>
+            </div>
+            {/* Search Section Ends */}
+
+            {/* Table Body Section Starts */}
+            <div className="overflow-hidden rounded-lg border bg-background shadow-sm">
+                <table className="w-full text-sm">
+                    <thead className="border-b bg-muted/50">
+                        <tr>
+
+                            <th className="px-6 py-3 text-left font-medium">
+                                Image
+                            </th>
+
+                            <th className="px-6 py-3 text-left font-medium">
+                                Product
+                            </th>
+
+                            <th className="px-6 py-3 text-left font-medium">
+                                Description
+                            </th>
+
+                            <th className="px-6 py-3 text-left font-medium">
+                                Price
+                            </th>
+
+                            <th className="px-6 py-3 text-left font-medium">
+                                Created
+                            </th>
+
+                            <th className="px-6 py-3 text-right font-medium">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody className="divide-y">
+                        {products.data.length > 0 ? (
+                            products.data.map((product) => (
+                                <tr
+                                    key={product.id}
+                                    className="hover:bg-muted/30"
+                                >
+                                    {/* Image */}
+                                    <td className="px-6 py-4">
+                                        <img
+                                            src={product.image}
+                                            alt={product.name}
+                                            className="h-16 w-16 rounded-md object-cover"
+                                        />
+                                    </td>
+
+                                    {/* Product */}
+                                    <td className="px-6 py-4">
+                                        <div className="font-medium">
+                                            {product.name}
+                                        </div>
+
+                                        <div className="text-xs text-muted-foreground">
+                                            #{product.id}
+                                        </div>
+                                    </td>
+
+                                    {/* Description */}
+                                    <td className="max-w-xs px-6 py-4">
+                                        <p className="truncate text-muted-foreground">
+                                            {product.description || '-'}
+                                        </p>
+                                    </td>
+
+                                    {/* Price */}
+                                    <td className="px-6 py-4 font-medium">
+                                        $
+                                        {Number(product.price).toFixed(2)}
+                                    </td>
+
+                                    {/* Created */}
+                                    <td className="px-6 py-4 text-muted-foreground">
+                                        {formatDate(product.created_at)}
+                                    </td>
+
+                                    {/* Actions */}
+                                    <td className="px-6 py-4">
+                                        <div className="flex justify-end gap-2">
+                                            <Link
+                                                href={route('products.edit', { id: product.id })}
+                                                className="rounded-md p-2 hover:bg-muted"
+                                                title="Edit"
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Link>
+
+                                            <button
+                                                type="button"
+                                                className="rounded-md p-2 text-destructive hover:bg-muted"
+                                                title="Delete"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td
+                                    colSpan={5}
+                                    className="px-6 py-12 text-center text-muted-foreground"
+                                >
+                                    No products found.
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+            {/* Table Body Section Ends */}
+
+            {/* Pagination Section Starts */}
+            <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                    Showing {products.from ?? 0} to {products.to ?? 0} of{' '}
+                    {products.total} products
+                </p>
+
+                <div className="flex gap-2">
+                    {products.prev_page_url && (
+                        <Link
+                            href={route('products.index', { page: products.current_page - 1 })}
+                            className="rounded-md border px-3 py-2 text-sm hover:bg-muted"
+                        >
+                            Previous
+                        </Link>
+                    )}
+
+                    {products.next_page_url && (
+                        <Link
+                            href={route('products.index', { page: products.current_page + 1 })}
+                            className="rounded-md border px-3 py-2 text-sm hover:bg-muted"
+                        >
+                            Next
+                        </Link>
+                    )}
+                </div>
+            </div>
+            {/* Pagination Section Ends */}
+        </div>
+    );
+}
+
+export default ProductList;
