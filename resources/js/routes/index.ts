@@ -378,3 +378,84 @@ dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =
 })
 
 dashboard.form = dashboardForm
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+export const products = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: products.url(options),
+    method: 'get',
+})
+
+products.definition = {
+    methods: ["get","head"],
+    url: '/products',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+products.url = (options?: RouteQueryOptions) => {
+    return products.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+products.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: products.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+products.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: products.url(options),
+    method: 'head',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+const productsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: products.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+productsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: products.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+productsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: products.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+products.form = productsForm

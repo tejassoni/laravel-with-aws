@@ -162,6 +162,86 @@ Controller42a740574ecbfbac32f8cc353fc32db9.form = Controller42a740574ecbfbac32f8
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+const Controller431eb3176f0b3b6628922509e73230e6 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: Controller431eb3176f0b3b6628922509e73230e6.url(options),
+    method: 'get',
+})
+
+Controller431eb3176f0b3b6628922509e73230e6.definition = {
+    methods: ["get","head"],
+    url: '/products',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+Controller431eb3176f0b3b6628922509e73230e6.url = (options?: RouteQueryOptions) => {
+    return Controller431eb3176f0b3b6628922509e73230e6.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+Controller431eb3176f0b3b6628922509e73230e6.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: Controller431eb3176f0b3b6628922509e73230e6.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+Controller431eb3176f0b3b6628922509e73230e6.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: Controller431eb3176f0b3b6628922509e73230e6.url(options),
+    method: 'head',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+const Controller431eb3176f0b3b6628922509e73230e6Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: Controller431eb3176f0b3b6628922509e73230e6.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+Controller431eb3176f0b3b6628922509e73230e6Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: Controller431eb3176f0b3b6628922509e73230e6.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/products'
+*/
+Controller431eb3176f0b3b6628922509e73230e6Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: Controller431eb3176f0b3b6628922509e73230e6.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+Controller431eb3176f0b3b6628922509e73230e6.form = Controller431eb3176f0b3b6628922509e73230e6Form
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
 * @route '/settings/appearance'
 */
 const Controllere19ee86e9cf603ce1a59a1ec5d21dec5 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -248,6 +328,7 @@ Controllere19ee86e9cf603ce1a59a1ec5d21dec5.form = Controllere19ee86e9cf603ce1a59
 const Controller = {
     '/': Controller980bb49ee7ae63891f1d891d2fbcf1c9,
     '/dashboard': Controller42a740574ecbfbac32f8cc353fc32db9,
+    '/products': Controller431eb3176f0b3b6628922509e73230e6,
     '/settings/appearance': Controllere19ee86e9cf603ce1a59a1ec5d21dec5,
 }
 
