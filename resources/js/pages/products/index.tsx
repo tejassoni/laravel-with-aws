@@ -1,6 +1,7 @@
 import FlashMessage from '@/components/flash-message';
 import { Link, router } from '@inertiajs/react';
-import { Eye, Pencil, Plus, Search, Trash2 } from 'lucide-react'; // https://lucide.dev/icons/
+import { Eye, Pencil, Plus, Search, Trash2, X } from 'lucide-react'; // https://lucide.dev/icons/
+import { useEffect, useState } from 'react';
 import { route } from 'ziggy-js';
 
 // Define TypeScript interfaces for the product data and pagination links
@@ -42,10 +43,33 @@ interface Products {
 // Define TypeScript interfaces for the product data and pagination links
 interface Props {
     products: Products;
+    filters: {
+        search?: string;
+    };
 }
 
 // Define the ProductList component that takes in the products prop and renders the product list with pagination and search functionality
-function ProductList({ products }: Props) {
+function ProductList({ products, filters }: Props) {
+    // Search state to manage the search input value, initialized with the search filter if available
+    const [search, setSearch] = useState(filters.search ?? '');
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            router.get(
+                '/products',
+                {
+                    search: search || undefined,
+                },
+                {
+                    preserveState: true,
+                    replace: true,
+                },
+            );
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [search]);
+
     // Function to format the date in a more readable format
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('en-US', {
@@ -71,10 +95,9 @@ function ProductList({ products }: Props) {
     // Render the product list with pagination and search functionality
     return (
         <div className="space-y-6 p-6">
-
-           {/* Flash message starts */}
+            {/* Flash message starts */}
             <FlashMessage />
-           {/* Flash message ends */}
+            {/* Flash message ends */}
 
             {/* Product Nav Header Starts */}
             <div className="flex items-center justify-between">
@@ -105,9 +128,23 @@ function ProductList({ products }: Props) {
 
                     <input
                         type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                         placeholder="Search products..."
-                        className="w-full rounded-md border bg-background py-2 pr-3 pl-9 text-sm outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full rounded-md border bg-background py-2 pr-9 pl-9 text-sm outline-none focus:ring-2 focus:ring-primary"
                     />
+
+                    {search && (
+                        <button
+                            type="button"
+                            onClick={() => setSearch('')}
+                            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                            title="Clear search"
+                            aria-label="Clear search"
+                        >
+                            <X className="h-4 w-4" />
+                        </button>
+                    )}
                 </div>
 
                 <div className="text-sm text-muted-foreground">

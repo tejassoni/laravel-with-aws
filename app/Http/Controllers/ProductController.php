@@ -10,10 +10,27 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Get the search query from the request input
+        $search = $request->input('search');
+        // products query with optional search filter, ordered by latest, and paginated
+        $products = Product::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+        // Return the products and filters to the Inertia view for rendering
         return inertia('products/index', [
-            'products' => Product::latest()->paginate(10),
+            'products' => $products,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 
